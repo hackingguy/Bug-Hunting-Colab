@@ -14,4 +14,4 @@ Video Tutorial [Link](https://www.youtube.com/watch?v=4MIfThgA1Ls)
 
 ### Need To Done
 
-- [ ] Remove Issue Need To Reconnect After 90 Minutes
+- [ ] Remove Issue Need To Reconnect After 90 Minutes (Solved But Not Tested Yet)
