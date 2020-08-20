@@ -45,7 +45,6 @@ class ngrok:
             clear_output()
         else:
             USR_Api = "your"
-    else:
     return tokens[USR_Api]
 
 
