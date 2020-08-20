@@ -41,11 +41,8 @@ class ngrok:
             print(r"Copy authtoken from https://dashboard.ngrok.com/auth")
             __temp = ipython.magic('%sx read -p "Token :"')
             tokens['your'] = __temp[0].split(':')[1]
-            USR_Api = "your"
             clear_output()
-        else:
-            USR_Api = "your"
-    return tokens[USR_Api]
+    return tokens['your']
 
 
   def ngrok_config(self, token, Gport, configPath, region, service):
