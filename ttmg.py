@@ -19,12 +19,6 @@ class ngrok:
     self.TOKEN = TOKEN
     self.USE_FREE_TOKEN = USE_FREE_TOKEN
     self.service = service
-    if USE_FREE_TOKEN:
-      self.sdict = {}
-      for i, sn in enumerate(service):
-        tempcP = f'{HOME}/.ngrok2/'+sn[0]+'.yml'
-        # Port, Protocol, config path
-        self.sdict[sn[0]] = [self.dport+i, sn[2], tempcP]
 
   def nameport(self, TOKEN, AUTO):
     if AUTO:
@@ -42,7 +36,7 @@ class ngrok:
             __temp = ipython.magic('%sx read -p "Token :"')
             tokens['your'] = __temp[0].split(':')[1]
             clear_output()
-    return tokens['your']
+            return tokens['your']
 
 
   def ngrok_config(self, token, Gport, configPath, region, service):
