@@ -46,8 +46,6 @@ class ngrok:
         else:
             USR_Api = "your"
     else:
-        USR_Api = "mind"
-        tokens["mind"] = TOKEN
     return tokens[USR_Api]
 
 
