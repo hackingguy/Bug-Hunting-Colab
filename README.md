@@ -9,6 +9,11 @@ Installation Guide [Click Here](https://medium.com/@akashchhabra710/bug-hunting-
 
 Video Tutorial [Link](https://www.youtube.com/watch?v=4MIfThgA1Ls)
 
+Get Ngrok Token [Here](https://ngrok.com/)
+
 ### Need To Done
 
-- [ ] Remove Issue Need To Reconnect After 90 Minutes (Solved But Not Tested Yet)
+- [ ] Remove Issue Need To Reconnect After 90 Minutes
+
+#### Note: Due to above issue you need to write something in google colab 60-90 Minutes After Connection
+##### And Before Reporting Any New Issue Related To Google Colab Please Try To Reset Runtime By Going To Runtime->Factory Reset Runtime
