@@ -9,12 +9,11 @@ Installation Guide [Click Here](https://medium.com/@akashchhabra710/bug-hunting-
 
 Video Tutorial [Link](https://www.youtube.com/watch?v=4MIfThgA1Ls)
 
+Now Telegram Bot Has Been Added From Version 2.0.0, If You wanna know how to get bot token and Chat ID for telegram [Click Here](http://bit.ly/colab-bugs)
+
 Get Ngrok Token [Here](https://ngrok.com/)
 
+##### My Advice is to run colab in EC2 Free Tier Instance, It will loose a burden!
 For Auto Disconnect Issue, Copy The Given Javascript in Colab And Paste in Your Tab Console And Never Close The Tab
-
-My Advice is to run colab in EC2 Free Tier Instance, It will loose a burden!
-
-Now Telegram Bot Has Been Added From Version 2.0.0, If You wanna know how to get bot token and Chat ID for telegram [Click Here](http://bit.ly/colab-bugs)
 
 ##### And Before Reporting Any New Issue Related To Google Colab Please Try To Reset Runtime By Going To Runtime->Factory Reset Runtime
