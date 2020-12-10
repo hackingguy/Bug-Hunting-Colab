@@ -1,5 +1,7 @@
 # Bug-Bounty-Colab
 
+**Currently Not Working Google Blocking NGROK Requests, Soon Gonna Update**
+
 **You Don't Have A VPS For Hunting Bug Bounties, No Issues Use This Script and Make A Proper Bug Hunting Environment Under 10 Minutes**
 <br>
 
