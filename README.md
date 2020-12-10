@@ -1,6 +1,6 @@
 # Bug-Bounty-Colab
 
-**Currently Not Working Google Blocking NGROK Requests, Soon Gonna Update**
+**Currently Not Working Google Blocking NGROK Requests, Soon Gonna Update - till then use [Colab-SSH](https://github.com/WassimBenzarti/colab-ssh)**
 
 **You Don't Have A VPS For Hunting Bug Bounties, No Issues Use This Script and Make A Proper Bug Hunting Environment Under 10 Minutes**
 <br>
