@@ -4,179 +4,10 @@ import time
 import uuid
 import re
 from subprocess import Popen,PIPE
+import shutil,urllib.request,subprocess
 
 HOME = os.path.expanduser("~")
 CWD = os.getcwd()
-
-tokens = {}
-
-
-class ngrok:
-
-  def __init__(self, TOKEN=None, USE_FREE_TOKEN=True,
-               service=[['Service1', 80, 'tcp'], ['Service2', 8080, 'tcp']],
-               region='us',
-               dBug=[f"{HOME}/.ngrok2/ngrok.yml", 4040]):
-    self.region = region
-    self.configPath, self.dport = dBug
-    self.TOKEN = TOKEN
-    self.USE_FREE_TOKEN = USE_FREE_TOKEN
-    self.service = service
-    if USE_FREE_TOKEN:
-      self.sdict = {}
-      for i, sn in enumerate(service):
-        tempcP = f'{HOME}/.ngrok2/'+sn[0]+'.yml'
-        # Port, Protocol, config path
-        self.sdict[sn[0]] = [self.dport+i, sn[2], tempcP]
-
-  def nameport(self, TOKEN, AUTO):
-    if AUTO:
-        try:
-            return tokens.popitem()[1]
-        except KeyError:
-            return "Invalid Token"
-    elif not TOKEN:
-        if not 'your' in tokens.keys():
-            from IPython import get_ipython
-            from IPython.display import clear_output
-            ipython = get_ipython()
-
-            print(r"Copy authtoken from https://dashboard.ngrok.com/auth")
-            __temp = ipython.magic('%sx read -p "Token :"')
-            tokens['your'] = __temp[0].split(':')[1]
-            USR_Api = "your"
-            clear_output()
-        else:
-            USR_Api = "your"
-    else:
-        USR_Api = "mind"
-        tokens["mind"] = TOKEN
-    return tokens[USR_Api]
-
-
-  def ngrok_config(self, token, Gport, configPath, region, service):
-    import os
-    data = """
-    region: {}
-    update: false
-    update_channel: stable
-    web_addr: localhost:{}
-    tunnels:\n""".format(region, Gport)
-    if not self.USE_FREE_TOKEN:
-      auth ="""
-    authtoken: {}""".format(token)
-      data = auth+data
-    tunnels = ""
-    for S in service:
-        Sn, Sp, SpC = S
-        tunnels += """      {}:
-        addr: {}
-        proto: {}
-        inspect: false\n""".format(Sn, Sp, SpC)
-    data = data + tunnels
-    os.makedirs(f'{HOME}/.ngrok2/', exist_ok=True)
-    with open(configPath, "w+") as configFile:
-        configFile.write(data)
-    return True
-
-
-  def startWebUi(self, token, dport, nServer, region, btc, configPath,
-               displayB, service, v):
-    import os, time, urllib
-    from IPython.display import clear_output
-    from json import loads
-
-    if token == "Invalid Token":
-        print(tokens)
-        os.exit()
-
-    installNgrok()
-    if v:
-      clear_output()
-      loadingAn(name="lds")
-      textAn("Starting ngrok ...", ty='twg')
-    if self.USE_FREE_TOKEN:
-      for sn in service:
-        self.ngrok_config(
-          token,
-          self.sdict[nServer][0],
-          self.sdict[nServer][2],
-          region,
-          service)
-        if sn[0] == nServer:
-          runSh(f"ngrok {sn[2]} -config={self.sdict[nServer][2]} {sn[1]} &", shell=True)
-    else:
-      self.ngrok_config(token, dport, configPath, region, service)
-      runSh(f"ngrok start --config {configPath} --all &", shell=True)
-    time.sleep(3)
-    try:
-        if self.USE_FREE_TOKEN:
-          dport = self.sdict[nServer][0]
-          nServer = 'command_line'
-          host = urllib.request.urlopen(f"http://localhost:{dport}/api/tunnels")
-        else:
-          host = urllib.request.urlopen(f"http://localhost:{dport}/api/tunnels")
-        host = loads(host.read())['tunnels']
-        for h in host:
-          if h['name'] == nServer:
-            host = h['public_url'][8:]
-            break
-    except urllib.error.URLError:
-        if v:
-          clear_output()
-          loadingAn(name="lds")
-          textAn("Ngrok Token is in used!. Again trying token ...", ty='twg')
-        time.sleep(2)
-        return True
-
-    data = {"url": f"http://{host}"}
-    if displayB:
-      displayUrl(data, btc)
-    return data
-
-
-  def start(self, nServer, btc='b', displayB=True, v=True):
-    import urllib
-    from IPython.display import clear_output
-    from json import loads
-
-    try:
-      nServerbk = nServer
-      if self.USE_FREE_TOKEN:
-          dport = self.sdict[nServer][0]
-          nServer = 'command_line'
-      else:
-        dport = self.dport
-      host = urllib.request.urlopen(f"http://localhost:{dport}/api/tunnels")
-      host = loads(host.read())['tunnels']
-      for h in host:
-        if h['name'] == nServer:
-          host = h['public_url'][8:]
-          data = {"url": f"http://{host}"}
-          if displayB:
-            displayUrl(data, btc)
-          return data
-
-      raise Exception('Not found tunnels')
-    except urllib.error.URLError:
-      for run in range(10):
-        if v:
-          clear_output()
-          loadingAn(name='lds')
-        dati = self.startWebUi(
-            self.nameport(self.TOKEN, self.USE_FREE_TOKEN) if not self.USE_FREE_TOKEN else {},
-            self.dport,
-            nServerbk,
-            self.region,
-            btc,
-            self.configPath,
-            displayB,
-            self.service,
-            v
-            )
-        if dati == True:
-            continue
-        return dati
 
 def checkAvailable(path_="", userPath=False):
     from os import path as _p
@@ -210,7 +41,6 @@ def accessSettingFile(file="", setting={}, v=True):
     except:
         if v:print(f"Error accessing the file: {fullPath}.")
 
-
 def displayUrl(data, btc='b', pNamU='Public URL: ', EcUrl=None, ExUrl=None, cls=True):
     from IPython.display import HTML, clear_output
 
@@ -241,7 +71,6 @@ def displayUrl(data, btc='b', pNamU='Public URL: ', EcUrl=None, ExUrl=None, cls=
 
     return display(HTML('''<style>@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200,900');  :root {   --text-color: '''+bttxt+''';   --shadow-color: '''+btshado+''';   --btn-color: '''+btcolor+''';   --bg-color: #141218; }  * {   box-sizing: border-box; } button { position:relative; padding: 10px 20px;     border: none;   background: none;   cursor: pointer;      font-family: "Source Code Pro";   font-weight: 900;   font-size: 100%;     color: var(--text-color);      background-color: var(--btn-color);   box-shadow: var(--shadow-color) 2px 2px 22px;   border-radius: 4px;    z-index: 0;     overflow: hidden;    }  button:focus {   outline-color: transparent;   box-shadow: var(--btn-color) 2px 2px 22px; }  .right::after, button::after {   content: var(--content);   display: block;   position: absolute;   white-space: nowrap;   padding: 40px 40px;   pointer-events:none; }  button::after{   font-weight: 200;   top: -30px;   left: -20px; }   .right, .left {   position: absolute;   width: 100%;   height: 100%;   top: 0; } .right {   left: 66%; } .left {   right: 66%; } .right::after {   top: -30px;   left: calc(-66% - 20px);      background-color: var(--bg-color);   color:transparent;   transition: transform .4s ease-out;   transform: translate(0, -90%) rotate(0deg) }  button:hover .right::after {   transform: translate(0, -47%) rotate(0deg) }  button .right:hover::after {   transform: translate(0, -50%) rotate(-7deg) }  button .left:hover ~ .right::after {   transform: translate(0, -50%) rotate(7deg) }  /* bubbles */ button::before {   content: '';   pointer-events: none;   opacity: .6;   background:     radial-gradient(circle at 20% 35%,  transparent 0,  transparent 2px, var(--text-color) 3px, var(--text-color) 4px, transparent 4px),     radial-gradient(circle at 75% 44%, transparent 0,  transparent 2px, var(--text-color) 3px, var(--text-color) 4px, transparent 4px),     radial-gradient(circle at 46% 52%, transparent 0, transparent 4px, var(--text-color) 5px, var(--text-color) 6px, transparent 6px);    width: 100%;   height: 300%;   top: 0;   left: 0;   position: absolute;   animation: bubbles 5s linear infinite both; }  @keyframes bubbles {   from {     transform: translate();   }   to {     transform: translate(0, -66.666%);   } }    Resources</style><center><a href="'''+showUrL+'''" target="_blank"><div style="width: 570px;   height: 80px; padding-top:15px"><button style='--content: "'''+showTxT+'''";'">   <div class="left"></div>'''+showTxT+'''<div class="right"></div> </div></button></a></center>'''))
 
-
 def findProcess(process, command="", isPid=False):
     from psutil import pids, Process
 
@@ -263,28 +92,11 @@ def findProcess(process, command="", isPid=False):
             except:
                 continue
 
-def installNgrok():
-    if checkAvailable("/usr/local/bin/ngrok"):
-        return
-    else:
-        import os
-        from zipfile import ZipFile
-        from urllib.request import urlretrieve
-
-        ngURL = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
-        urlretrieve(ngURL, 'ngrok-amd64.zip')
-        with ZipFile('ngrok-amd64.zip', 'r') as zip_ref:
-            zip_ref.extractall('/usr/local/bin/')
-        os.chmod('/usr/local/bin/ngrok', 0o755)
-        os.unlink('ngrok-amd64.zip')
-
 def installAutoSSH():
     if checkAvailable("/usr/bin/autossh"):
         return
     else:
         runSh("apt-get install autossh -qq -y")
-
-
 
 def runSh(args, *, output=False, shell=False, cd=None):
     import subprocess, shlex
@@ -376,90 +188,40 @@ def updateCheck(self, Version):
     else:
         print("Script Update Checker: Your script is up to date")
 
-class LocalhostRun:
-  def __init__(self,port,id=None,interval=30,retries=30):
-    import os
-    filePath = "/usr/local/sessionSettings/localhostDB.json"
-    if not os.path.exists(filePath):
-      os.makedirs(filePath[:-16], exist_ok=True)
-      open(filePath, 'w').close()
-    installAutoSSH()
-    if not id:id=str(uuid.uuid4())[:8]
-    self.connection=None
-    self.id=id
-    self.port=port
-    self.interval=interval
-    self.retries=retries
-
-  def start(self):
-    if self.connection:self.connection.kill()
-    self.connection=Popen(f"ssh -R 80:localhost:{self.port} {self.id}@ssh.localhost.run -o StrictHostKeyChecking=no".split(), stdout=PIPE, stdin=PIPE)
+def _download(url, path):
     try:
-      return re.findall("http://(.*?.localhost.run)",self.connection.stdout.readline().decode("utf-8"))[0]
+        with urllib.request.urlopen(url) as response:
+            with open(path, 'wb') as outfile:
+                shutil.copyfileobj(response, outfile)
     except:
-      raise Exception(self.connection.stdout.readline().decode("utf-8"))
+        print("Failed to download ", url)
+        raise
 
-  def keep_alive(self):
-    # if self.connection:self.connection.kill()
-    import urllib
-    try:
-      localhostOpenDB = dict(accessSettingFile("localhostDB.json", v=False))
-    except TypeError:
-      localhostOpenDB = dict()
-
-    if findProcess("autossh", f"80:localhost:{self.port}"):
-      try:
-        oldAddr = localhostOpenDB[str(self.port)]
-        urllib.request.urlopen("http://"+oldAddr)
-        return oldAddr
-      except:
-        pass
-
-    self.connection=Popen(f"autossh -R 80:localhost:{self.port} {self.id}@ssh.localhost.run -o StrictHostKeyChecking=no -o ServerAliveInterval={self.interval} -o ServerAliveCountMax={self.retries}".split(), stdout=PIPE, stdin=PIPE)
-    #print("ssh -R 80:localhost:{self.port} {self.id}@ssh.localhost.run -o StrictHostKeyChecking=no -o ServerAliveInterval={self.interval} -o ServerAliveCountMax={self.retries}")
-    try:
-      newAddr = re.findall("http://(.*?.localhost.run)",self.connection.stdout.readline().decode("utf-8"))[0]
-      localhostOpenDB[str(self.port)] = newAddr 
-      accessSettingFile("localhostDB.json" , localhostOpenDB, v=False)
-      return newAddr
-    except:
-      raise Exception(self.connection.stdout.readline().decode("utf-8"))
-
-  def kill(self):
-    self.connection.kill()
-
-
-class PortForward:
-  def __init__(self,connections,region=None,SERVICE="localhost",TOKEN=None,USE_FREE_TOKEN=None,config=None):
-    c=dict()
-    for con in connections:
-      c[con[0]]=dict(port=con[1],proto=con[2])
-    self.connections=c
-    self.ngrok=ngrok(TOKEN,USE_FREE_TOKEN,connections,region,config)
-    self.SERVICE = SERVICE
-
-  def start(self,name,btc='b',displayB=True,v=True):
-    from IPython.display import clear_output
-
-    if self.SERVICE == "localhost":
-        con=self.connections[name]
-        port=con["port"]
-        proto=con["proto"]
-        if(proto=="tcp"):
-          return self.ngrok.start(name,btc,displayB,v)
-        else:
-          if v:
-              clear_output()
-              loadingAn(name="lds")
-              textAn("Starting localhost ...", ty="twg")
-          data = dict(url="http://"+LocalhostRun(port).keep_alive())
-          if displayB:
-              displayUrl(data, btc)
-          return data
-    elif self.SERVICE == "ngrok":
-        return self.ngrok.start(name,btc,displayB,v)
-
-
-class PortForward_wrapper(PortForward):
-  def __init__(self,SERVICE,TOKEN,USE_FREE_TOKEN,connections,region,config):
-    super(self.__class__,self).__init__(connections,region,SERVICE,TOKEN,USE_FREE_TOKEN,config)
+def argoTunnel():
+    _download("https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.tgz", "cloudflared.tgz")
+    shutil.unpack_archive("cloudflared.tgz")
+    cfd_proc = subprocess.Popen(
+        ["./cloudflared", "tunnel", "--url", "ssh://localhost:22", "--logfile", "cloudflared.log", "--metrics", "localhost:49589"],
+        stdout = subprocess.PIPE,
+        universal_newlines = True
+        )
+    time.sleep(4)
+    if cfd_proc.poll() != None:
+        raise RuntimeError("Failed to run cloudflared. Return code:" + str(cloudflared.returncode) + "\nSee clouldflared.log for more info.")
+    hostname = None
+    # Sometimes it takes long time to display user host name in cloudflared metrices.
+    for i in range(20):
+        with urllib.request.urlopen("http://127.0.0.1:49589/metrics") as response:
+            text = str(response.read())
+            sub = "\\ncloudflared_tunnel_user_hostnames_counts{userHostname=\"https://"
+            begin = text.find(sub)
+            if begin == -1:
+                time.sleep(10)
+                #print("Retry reading cloudflared user hostname")
+                continue
+            end = text.index("\"", begin + len(sub))
+            hostname = text[begin + len(sub) : end]
+            break
+        if hostname == None:
+            raise RuntimeError("Failed to get user hostname from cloudflared")
+    return hostname
