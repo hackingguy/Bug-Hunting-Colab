@@ -1,7 +1,5 @@
 # Bug-Bounty-Colab
 
-**Currently Not Working Google Blocking NGROK Requests, Soon Gonna Update - till then use [Colab-SSH](https://github.com/WassimBenzarti/colab-ssh)**
-
 **You Don't Have A VPS For Hunting Bug Bounties, No Issues Use This Script and Make A Proper Bug Hunting Environment Under 10 Minutes**
 <br>
 
@@ -13,7 +11,7 @@ Video Tutorial [Link](https://www.youtube.com/watch?v=4MIfThgA1Ls)
 
 If You wanna know how to get bot token and Chat ID for telegram [Click Here](http://bit.ly/colab-bugs)
 
-Get Ngrok Token [Here](https://ngrok.com/)
+Now Using Argotunnel! No Need of any token till its **Beta** program is running
 
 ##### My Advice is to run colab in EC2 Free Tier Instance, It will loose a burden!
 For Auto Disconnect Issue, Copy The Given Javascript in Colab And Paste in Your Tab Console And Never Close The Tab
