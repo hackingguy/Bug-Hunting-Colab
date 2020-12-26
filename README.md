@@ -1,4 +1,4 @@
-# Bug-Bounty-Colab
+# Bug-Hunting-Colab
 
 **You Don't Have A VPS For Hunting Bug Bounties, No Issues Use This Script and Make A Proper Bug Hunting Environment Under 10 Minutes**
 <br>
