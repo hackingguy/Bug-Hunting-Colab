@@ -13,7 +13,7 @@ If You wanna know how to get bot token and Chat ID for telegram [Click Here](htt
 
 Now Using Argotunnel! No Need of any token till its **Beta** program is running
 
-But you need to install cloudflared binary on your windows or linux machine before using it from [here](https://developers.cloudflare.com/argo-tunnel/downloads)
+But you need to install **cloudflared binary** on your windows or linux machine before using it from [here](https://developers.cloudflare.com/argo-tunnel/downloads)
 
 ##### My Advice is to run colab in EC2 Free Tier Instance, It will loose a burden!
 For Auto Disconnect Issue, Copy The Given Javascript in Colab And Paste in Your Tab Console And Never Close The Tab
