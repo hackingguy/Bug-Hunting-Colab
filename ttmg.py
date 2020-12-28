@@ -46,13 +46,8 @@ def displayUrl(data, btc='b', pNamU='Public URL: ', EcUrl=None, ExUrl=None, cls=
 
     if cls:
         clear_output()
-    showTxT = f'{pNamU}{data["url"]}'
-    if EcUrl:
-      showUrL = data["url"]+EcUrl
-    elif ExUrl:
-      showUrL = ExUrl
-    else:
-      showUrL = data["url"]
+    showTxT = pNamU
+    showUrL = ExUrl
     if btc == 'b':
           # blue
           bttxt = 'hsla(210, 50%, 85%, 1)'
