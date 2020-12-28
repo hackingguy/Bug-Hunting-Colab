@@ -9,6 +9,8 @@ Installation Guide [Click Here](https://medium.com/@akashchhabra710/bug-hunting-
 
 Video Tutorial [Link](https://www.youtube.com/watch?v=4MIfThgA1Ls)
 
+Added Chrome Remote Desktop as noVNC Alternative
+
 If You wanna know how to get bot token and Chat ID for telegram [Click Here](http://bit.ly/colab-bugs)
 
 Now Using Argotunnel! No Need of any token till its **Beta** program is running
