@@ -1,0 +1,37 @@
+#! /bin/bash
+
+PASS = "123456"
+
+echo "$PASS" | sudo -S add-apt-repository ppa:numix/ppa -y
+echo "$PASS" | sudo -S apt update -y
+echo "$PASS" | sudo -S apt install -y numix-icon-theme-circle arc-theme
+
+#import config file
+. ./switch.conf
+
+#Convert rgba value to 0-255 range
+LR="$(($LIGHT_RED/255.0))"
+LG="$(($LIGHT_GREEN/255.0))"
+LB="$(($LIGHT_BLUE/255.0))"
+
+#xfce4 settings
+xfconf-query -c xsettings -p /Net/ThemeName -s "$LIGHT_THEME"
+
+#icon pack
+xfconf-query -c xsettings -p /Net/IconThemeName -s "$LIGHT_ICON"
+
+#window manager: if you're using xfcewm
+xfconf-query -c xfwm4 -p /general/theme -s "$LIGHT_WM_THEME"
+
+#wallpaper change
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitoreDP-1/workspace0/last-image -s "$LIGHT_WALLPAPER"
+
+#This is for panel 0 only, if you have more than 1 panels repeat the code
+#below replacing panel-0 by panel-1 and so on
+#Repeat this for dark theme too
+xfconf-query -c xfce4-panel -p /panels/panel-0/background-rgba -s "$LR" -s "$LG" -s "$LB" -s "$LIGHT_OPACITY"
+
+#restart the xfce4 panel
+#this can be commented out if performance is your concern
+#but it comes with some caveats if you disable this
+xfce4-panel -r
