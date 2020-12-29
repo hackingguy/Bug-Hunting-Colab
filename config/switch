@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PASS = "123456"
+PASS="123456"
 
 echo "$PASS" | sudo -S add-apt-repository ppa:numix/ppa -y
 echo "$PASS" | sudo -S apt update -y
@@ -24,7 +24,7 @@ xfconf-query -c xsettings -p /Net/IconThemeName -s "$LIGHT_ICON"
 xfconf-query -c xfwm4 -p /general/theme -s "$LIGHT_WM_THEME"
 
 #wallpaper change
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitoreDP-1/workspace0/last-image -s "$LIGHT_WALLPAPER"
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "$LIGHT_WALLPAPER"
 
 #This is for panel 0 only, if you have more than 1 panels repeat the code
 #below replacing panel-0 by panel-1 and so on
