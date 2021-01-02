@@ -25,13 +25,3 @@ xfconf-query -c xfwm4 -p /general/theme -s "$LIGHT_WM_THEME"
 
 #wallpaper change
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "$LIGHT_WALLPAPER"
-
-#This is for panel 0 only, if you have more than 1 panels repeat the code
-#below replacing panel-0 by panel-1 and so on
-#Repeat this for dark theme too
-#xfconf-query -c xfce4-panel -p /panels/panel-0/background-rgba -s "$LR" -s "$LG" -s "$LB" -s "$LIGHT_OPACITY"
-
-#restart the xfce4 panel
-#this can be commented out if performance is your concern
-#but it comes with some caveats if you disable this
-xfce4-panel -r
