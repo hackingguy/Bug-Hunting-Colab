@@ -41,7 +41,7 @@ To get it running simply follow below steps:
 
 **Cloudflared Binary** Download From [Here](https://developers.cloudflare.com/argo-tunnel/downloads)<br>
 Set The Binary In **Environmental Variables** <br>
-2 ways of using it (**Argotunnel And Chrome Desktop**) are described in this [video]().
+2 ways of using it (**Argotunnel And Chrome Desktop**) are described in this [video](https://youtu.be/bJUr0SnBpEM).
 
 
 <!-- USAGE EXAMPLES -->
