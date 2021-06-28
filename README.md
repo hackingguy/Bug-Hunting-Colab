@@ -39,8 +39,17 @@ To get it running simply follow below steps:
 
 ### Prerequisites
 
-**Cloudflared Binary** Download From [Here](https://developers.cloudflare.com/argo-tunnel/downloads)<br>
-Set The Binary In **Environmental Variables** <br>
+Don't worry, you only have to do this once per client machine.
+
+  1. Download [Cloudflared (Argo Tunnel)](https://developers.cloudflare.com/argo-tunnel/downloads), then copy the absolute path to the cloudflare binary
+  2. Now, you have to append the following to your SSH config file (usually under ~/.ssh/config in Linux and in C:/Users/\<Username\>/.ssh/config in Windows):
+  ```
+    Host *.trycloudflare.com
+	  HostName %h
+	  User root
+	  Port 22
+	  ProxyCommand <PUT_THE_ABSOLUTE_CLOUDFLARE_PATH_HERE> access ssh --hostname %h
+  ```
 2 ways of using it (**Argotunnel And Chrome Desktop**) are described in this [video](https://youtu.be/bJUr0SnBpEM).
 
 
